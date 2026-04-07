@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Volunteer Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="./admin.css"/>
+</head>
+<body>
 
+<!-- -- LOGIN -- -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-badge">Admin Access</div>
+    <div class="login-title">Volunteer Management Dashboard</div>
+    <div class="login-sub">Sign in with your admin credentials to manage volunteer registrations.</div>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-info" id="loginInfo"></div>
+    <div class="login-field">
+      <label>Account Name</label>
+      <div class="input-wrap">
+        <span class="input-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 21a8 8 0 0 0-16 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <input id="loginName" type="text" placeholder="Santos, Maria A." autocomplete="off"/>
+      </div>
+      <div class="login-hint">Format: Last Name, First Name M.I.</div>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <div class="input-wrap">
+        <span class="input-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="4" y="10" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <input id="loginPass" type="password" placeholder="********" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="login-meta">
+      <label class="remember">
+        <input id="rememberMe" type="checkbox"/>
+        Remember Me
+      </label>
+      <button class="forgot-link" type="button" data-action="forgot-pass">Forgot Password?</button>
+    </div>
+    <button class="login-btn" type="button" data-action="login">
+      <span class="btn-icon" aria-hidden="true">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 17l5-5-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 12H3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      Sign In
+    </button>
+    <button class="create-toggle" type="button" data-action="toggle-create">
+      <span class="btn-icon" aria-hidden="true">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      Create an Account
+    </button>
+
+    <div class="create-wrap" id="createWrap">
+      <div class="create-msg" id="createMsg"></div>
+      <div class="login-field">
+        <label>Account Name</label>
+        <div class="input-wrap">
+          <span class="input-icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M20 21a8 8 0 0 0-16 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <input id="createName" type="text" placeholder="Santos, Maria A." autocomplete="off"/>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="input-icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="4" y="10" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <input id="createPass" type="password" placeholder="At least 6 characters" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>Confirm Password</label>
+        <div class="input-wrap">
+          <span class="input-icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="4" y="10" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <input id="createPass2" type="password" placeholder="Repeat password" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>Setup Code</label>
+        <div class="input-wrap">
+          <span class="input-icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 18l6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="7" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </span>
+          <input id="createCode" type="password" placeholder="Ask the lead admin" autocomplete="off"/>
+        </div>
+        <div class="login-hint">Used to prevent unauthorized account creation.</div>
+      </div>
+      <button class="login-btn" type="button" data-action="create-account">
+        <span class="btn-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Create Account
+      </button>
+      <div class="create-note">Accounts are stored securely in the backend. Use the setup code for authorized creation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- -- DASHBOARD -- -->
+<div id="dashPage">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo" aria-hidden="true">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="topbar-title">
+        <div class="topbar-name">Volunteer Management Dashboard</div>
+        <div class="topbar-sub">Ugnayan ng Pahinugod Manila</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-counter">
+        <span class="counter-label">Total Volunteers</span>
+        <span class="counter-value loading" id="topbarTotal">-</span>
+      </div>
+      <span class="topbar-user" id="topbarUser"></span>
+      <button class="btn-logout" type="button" data-action="logout">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="print-header" id="printHeader">
+      <div>
+        <h1>Volunteer Management Dashboard - Registered Volunteers</h1>
+        <p>Ugnayan ng Pahinugod Manila</p>
+      </div>
+      <div style="text-align:right">
+        <p id="printDate"></p>
+        <p id="printCount"></p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Volunteers</div>
+        <div class="stat-value loading" id="statTotal">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">This Month</div>
+        <div class="stat-value loading" id="statMonth">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Search Results</div>
+        <div class="stat-value loading" id="statFiltered">-</div>
+      </div>
+    </div>
+
+    <div class="stats-row program-row">
+      <div class="stat-card">
+        <div class="stat-label">Tutorial Service Program</div>
+        <div class="stat-value loading" id="statTutorial">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Health Training Program</div>
+        <div class="stat-value loading" id="statHealth">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Disaster Preparedness &amp; Risk Management Program</div>
+        <div class="stat-value loading" id="statDisaster">-</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <input id="searchInput" type="text" placeholder="Search by name, email, phone, or UID"
+               />
+        <button class="clear-btn" type="button" data-action="clear-search">&times;</button>
+      </div>
+      <select class="filter-select" id="programFilter">
+        <option value="all">All Programs</option>
+        <option value="Tutorial Service Program">Tutorial Service Program</option>
+        <option value="Health Training Program">Health Training Program</option>
+        <option value="Disaster Preparedness &amp; Risk Management Program">Disaster Preparedness &amp; Risk Management Program</option>
+      </select>
+      <select class="filter-select" id="yearFilter">
+        <option value="all">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+      </select>
+      <button class="action-btn btn-view" type="button" data-action="view-all">
+        <span class="btn-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 12h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        View Full List
+      </button>
+      <button class="action-btn btn-refresh" type="button" data-action="refresh">Refresh</button>
+      <button class="action-btn btn-excel" type="button" data-action="export-excel">
+        <span class="btn-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Export Excel
+      </button>
+      <button class="action-btn btn-print" type="button" data-action="print">
+        <span class="btn-icon" aria-hidden="true">
+          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 9V3h12v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="6" y="14" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M6 17H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Print
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Registered Volunteers</h2>
+        <span class="result-count" id="resultCount"></span>
+      </div>
+      <div class="table-wrap" id="tableWrap">
+        <div class="spinner-wrap"><div class="spinner"></div><p style="color:var(--muted);font-size:13px">Loading...</p></div>
+      </div>
+      <div class="table-footer">
+        <button class="show-more-btn" id="showMoreBtn" type="button" data-action="show-more">
+          <span class="btn-icon" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Show More
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- -- DETAIL MODAL -- -->
+<div class="modal-bg" id="detailModal" style="display:none">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<footer style="text-align:center; padding:10px; font-size:12px; color:#666;">
+  &copy; 2026 University of the Philippines. All Rights Reserved - Developed by ScyllaCoreSec
+</footer>
+
+<script type="module" src="./admin.js"></script>
+</body>
+</html>
