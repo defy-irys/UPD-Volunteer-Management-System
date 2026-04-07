@@ -15,7 +15,12 @@ body {
   margin: 0;
   font-family: 'DM Sans', Arial, sans-serif;
   color: var(--text);
-  background: #f5f5f5;
+  background-color: #f5f5f5;
+  background-image: url('../assets/Oblation-Plaza-by-Misael-Bacani_4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,6 +42,20 @@ button {
 input,
 select {
   font-family: inherit;
+}
+
+.icon-svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.input-icon,
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
 }
 
 /* Login */
@@ -115,6 +134,10 @@ select {
   font-weight: 600;
   cursor: pointer;
   margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .login-btn {
@@ -167,14 +190,17 @@ select {
 
 /* Dashboard */
 .topbar {
-  background: #fff;
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(26, 58, 92, 0.75), rgba(26, 58, 92, 0.55));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
   padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  color: #fff;
 }
 
 .topbar-title {
@@ -184,12 +210,12 @@ select {
 
 .topbar-name {
   font-weight: 700;
-  color: var(--navy);
+  color: #fff;
 }
 
 .topbar-sub {
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .topbar-right {
@@ -200,11 +226,26 @@ select {
 }
 
 .topbar-counter {
-  background: #f7f4f0;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
   padding: 8px 12px;
   font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.counter-label {
+  display: block;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.counter-value {
+  display: block;
+  font-weight: 700;
+  color: #fff;
 }
 
 .topbar-user {
@@ -212,15 +253,18 @@ select {
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: var(--navy);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .btn-logout {
-  border: 1px solid var(--border);
-  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+  color: #fff;
 }
 
 .main {
@@ -235,8 +279,10 @@ select {
 }
 
 .stat-card {
-  background: #fff;
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-radius: 12px;
   padding: 16px;
 }
@@ -265,10 +311,12 @@ select {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   padding: 8px 10px;
-  background: #fff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   flex: 1;
   min-width: 220px;
 }
@@ -277,6 +325,12 @@ select {
   border: none;
   outline: none;
   width: 100%;
+  background: transparent;
+  color: var(--text);
+}
+
+.search-wrap input::placeholder {
+  color: rgba(31, 26, 23, 0.5);
 }
 
 .clear-btn {
@@ -288,28 +342,47 @@ select {
 }
 
 .filter-select {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   padding: 8px 10px;
-  background: #fff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text);
 }
 
 .filter-select.active {
-  border-color: var(--navy);
-  box-shadow: 0 0 0 2px rgba(123, 17, 19, 0.12);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(123, 17, 19, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .action-btn {
-  border: 1px solid var(--border);
-  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+  color: var(--text);
+}
+
+.show-more-btn {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
 }
 
 .table-card {
-  background: #fff;
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-radius: 14px;
   padding: 16px;
 }
@@ -350,11 +423,14 @@ select {
 }
 
 .show-more-btn {
-  border: 1px solid var(--border);
-  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+  color: var(--text);
 }
 
 .modal-bg {
@@ -368,7 +444,10 @@ select {
 }
 
 .modal {
-  background: #fff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-radius: 12px;
   padding: 20px;
   max-width: 520px;
@@ -378,6 +457,48 @@ select {
 footer {
   margin-top: auto;
   width: 100%;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 16px;
+  text-align: center;
+}
+
+.topbar-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logo-img {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+  margin-top: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.photo-credit {
+  position: fixed;
+  right: 14px;
+  bottom: 12px;
+  z-index: 20;
+  font-size: 11.5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  max-width: calc(100vw - 28px);
+  text-align: right;
 }
 
 

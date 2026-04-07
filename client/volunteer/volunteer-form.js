@@ -316,7 +316,7 @@ function renderStep1(c) {
 
     <div class="field">
       <label>Full Name <span>*</span></label>
-      <input id="full_name" type="text" placeholder="e.g. Maria Santos" value="${data.full_name}"/>
+      <input id="full_name" type="text" placeholder="e.g. Santos Maria L." value="${data.full_name}"/>
       <div class="err-msg" id="full_name_err"></div>
     </div>
 
@@ -333,22 +333,24 @@ function renderStep1(c) {
       </div>
     </div>
 
-    <div class="field">
-      <label>Are you an alumnus of UP? <span>*</span></label>
-      <div class="choice-row" data-choice="alumnus_up">
-        <button type="button" class="choice-btn ${data.alumnus_up === 'Yes' ? 'active' : ''}" data-choice-value="Yes">Yes</button>
-        <button type="button" class="choice-btn ${data.alumnus_up === 'No' ? 'active' : ''}" data-choice-value="No">No</button>
+    <div class="row-2">
+      <div class="field">
+        <label>Are you an alumnus of UP? <span>*</span></label>
+        <div class="choice-row" data-choice="alumnus_up">
+          <button type="button" class="choice-btn ${data.alumnus_up === 'Yes' ? 'active' : ''}" data-choice-value="Yes">Yes</button>
+          <button type="button" class="choice-btn ${data.alumnus_up === 'No' ? 'active' : ''}" data-choice-value="No">No</button>
+        </div>
+        <div class="err-msg" id="alumnus_up_err"></div>
       </div>
-      <div class="err-msg" id="alumnus_up_err"></div>
-    </div>
 
-    <div class="field">
-      <label>Are you connected with PGH? <span>*</span></label>
-      <div class="choice-row" data-choice="connected_pgh">
-        <button type="button" class="choice-btn ${data.connected_pgh === 'Yes' ? 'active' : ''}" data-choice-value="Yes">Yes</button>
-        <button type="button" class="choice-btn ${data.connected_pgh === 'No' ? 'active' : ''}" data-choice-value="No">No</button>
+      <div class="field">
+        <label>Are you connected with PGH? <span>*</span></label>
+        <div class="choice-row" data-choice="connected_pgh">
+          <button type="button" class="choice-btn ${data.connected_pgh === 'Yes' ? 'active' : ''}" data-choice-value="Yes">Yes</button>
+          <button type="button" class="choice-btn ${data.connected_pgh === 'No' ? 'active' : ''}" data-choice-value="No">No</button>
+        </div>
+        <div class="err-msg" id="connected_pgh_err"></div>
       </div>
-      <div class="err-msg" id="connected_pgh_err"></div>
     </div>
 
     <div class="row-2">
