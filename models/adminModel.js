@@ -1,4 +1,18 @@
-﻿const { pool } = require('../db');
+﻿const db = require('../db');
+
+// Using the pool directly
+async function getVolunteers() {
+  const { rows } = await db.pool.query('SELECT * FROM volunteers');
+  return rows;
+}
+
+async function addVolunteer(data) {
+  const result = await db.query(
+    'INSERT INTO volunteers(name, email) VALUES($1, $2) RETURNING *',
+    [data.name, data.email]
+  );
+  return result.rows[0];
+}
 
 async function findByName(name) {
   const { rows } = await pool.query(
@@ -16,4 +30,4 @@ async function createAdmin(name, passwordHash) {
   return rows[0];
 }
 
-module.exports = { findByName, createAdmin };
+module.exports = { findByName, createAdmin, getVolunteers, addVolunteer };
