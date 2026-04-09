@@ -1,25 +1,9 @@
-const API_BASE_URL = (() => {
-  // Check if on localhost
-  const hostname = window.location.hostname;
-  const isLocal = hostname === 'localhost' || 
-                  hostname === '127.0.0.1' ||
-                  hostname === '';
-  
-  // Log for debugging
-  console.log("Current hostname:", hostname);
-  console.log("Is localhost?", isLocal);
-  
-  // Return the correct URL
-  const url = isLocal 
-    ? "http://localhost:5000"
-    : "https://upd-volunteer-management-system.onrender.com";
-  
-  console.log("🌐 Using API URL:", url);
-  return url;
-})();
+const API_BASE_URL = "https://upd-volunteer-management-system.onrender.com";
 
-// Also add a global check - if this logs undefined, something is very wrong
-console.log("✅ API_BASE_URL is set to:", API_BASE_URL);
+// For local development, comment the line above and uncomment below:
+// const API_BASE_URL = "http://localhost:5000";
+
+console.log("API_BASE_URL:", API_BASE_URL);
 
 let currentUser = null;
 let searchTerm = '';
