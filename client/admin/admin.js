@@ -2,6 +2,10 @@ import { API_BASE_URL } from '../shared/config.js';
 console.log("IMPORT CHECK - API_BASE_URL:", API_BASE_URL);
 console.log("Type of API_BASE_URL:", typeof API_BASE_URL);
 
+// If import failed, use fallback
+const FINAL_API_URL = API_BASE_URL || "https://upd-volunteer-management-system.onrender.com";
+console.log("🔍 FINAL_API_URL:", FINAL_API_URL);
+
 import { API_BASE_URL } from '../shared/config.js';
 
 console.log("API BASE:", API_BASE_URL);
