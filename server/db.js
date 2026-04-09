@@ -2,7 +2,10 @@
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.PG_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+  ssl: process.env.PG_SSL === 'true' ? { rejectUnauthorized: false } : false
 });
 
-module.exports = { pool };
+// helper function
+const query = (text, params) => pool.query(text, params);
+
+module.exports = { pool, query };
