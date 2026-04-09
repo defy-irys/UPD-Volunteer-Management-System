@@ -1,14 +1,25 @@
-import { API_BASE_URL } from '../shared/config.js';
-console.log("IMPORT CHECK - API_BASE_URL:", API_BASE_URL);
-console.log("Type of API_BASE_URL:", typeof API_BASE_URL);
+const API_BASE_URL = (() => {
+  // Check if on localhost
+  const hostname = window.location.hostname;
+  const isLocal = hostname === 'localhost' || 
+                  hostname === '127.0.0.1' ||
+                  hostname === '';
+  
+  // Log for debugging
+  console.log("Current hostname:", hostname);
+  console.log("Is localhost?", isLocal);
+  
+  // Return the correct URL
+  const url = isLocal 
+    ? "http://localhost:5000"
+    : "https://upd-volunteer-management-system.onrender.com";
+  
+  console.log("🌐 Using API URL:", url);
+  return url;
+})();
 
-// If import failed, use fallback
-const FINAL_API_URL = API_BASE_URL || "https://upd-volunteer-management-system.onrender.com";
-console.log("🔍 FINAL_API_URL:", FINAL_API_URL);
-
-import { API_BASE_URL } from '../shared/config.js';
-
-console.log("API BASE:", API_BASE_URL);
+// Also add a global check - if this logs undefined, something is very wrong
+console.log("✅ API_BASE_URL is set to:", API_BASE_URL);
 
 let currentUser = null;
 let searchTerm = '';
