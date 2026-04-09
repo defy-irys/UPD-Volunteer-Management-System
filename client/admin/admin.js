@@ -1,4 +1,8 @@
 import { API_BASE_URL } from '../shared/config.js';
+console.log("IMPORT CHECK - API_BASE_URL:", API_BASE_URL);
+console.log("Type of API_BASE_URL:", typeof API_BASE_URL);
+
+import { API_BASE_URL } from '../shared/config.js';
 
 console.log("API BASE:", API_BASE_URL);
 
