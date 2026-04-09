@@ -18,11 +18,55 @@ app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(sanitize);
 
-const allowedOrigin = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : true;
+const allowedOrigins = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'https://upd-volunteer-form-5v7mnfatw-defy-irys-projects.vercel.app',
+  /\.vercel\.app$/,
+  /\.vercel\.app/
+];
 
-app.use(cors({ origin: allowedOrigin, credentials: true }));
+if (process.env.CORS_ORIGIN) {
+  const envOrigins = process.env.CORS_ORIGIN.split(',').map(o => o.trim());
+  allowedOrigins.push(...envOrigins);
+}
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (typeof allowed === 'string') {
+        return allowed === origin;
+      } else if (allowed instanceof RegExp) {
+        return allowed.test(origin);
+      }
+      return false;
+    });
+    
+    if (isAllowed) {
+      console.log(`✅ CORS allowed: ${origin}`);
+      callback(null, true);
+    } else {
+      console.log(`❌ CORS blocked: ${origin}`);
+      console.log(`Allowed origins:`, allowedOrigins);
+      callback(new Error('CORS not allowed from this origin'));
+    }
+  },
+  credentials: true, // Important for cookies/sessions
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie']
+}));
+
+
+app.options('*', cors());
+
 app.use(morgan('tiny'));
 
 app.use(rateLimit({
