@@ -2,13 +2,13 @@
 
 // GET volunteers
 async function getVolunteers() {
-  const { rows } = await db.pool.query('SELECT * FROM volunteers');
+  const { rows } = await db.query('SELECT * FROM volunteers');
   return rows;
 }
 
 // ADD volunteer
 async function addVolunteer(data) {
-  const { rows } = await db.pool.query(
+  const { rows } = await db.query(
     'INSERT INTO volunteers(name, email) VALUES($1, $2) RETURNING *',
     [data.name, data.email]
   );
@@ -17,7 +17,7 @@ async function addVolunteer(data) {
 
 // FIND admin by name
 async function findByName(name) {
-  const { rows } = await db.pool.query(
+  const { rows } = await db.query(
     'SELECT id, name, password_hash FROM admins WHERE lower(name) = lower($1) LIMIT 1',
     [name]
   );
@@ -26,7 +26,7 @@ async function findByName(name) {
 
 // CREATE admin
 async function createAdmin(name, passwordHash) {
-  const { rows } = await db.pool.query(
+  const { rows } = await db.query(
     'INSERT INTO admins (name, password_hash) VALUES ($1, $2) RETURNING id, name',
     [name, passwordHash]
   );
