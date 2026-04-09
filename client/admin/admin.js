@@ -37,8 +37,7 @@ const ICONS = {
 
 function apiFetch(path, options = {}) {
   const token = localStorage.getItem('vms_token');
-  console.log(`Fetching ${path}, Token exists: ${!!token}`);
-
+  
   const opts = {
     ...options,
     headers: {
@@ -46,8 +45,10 @@ function apiFetch(path, options = {}) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {})
     },
-    credentials: 'include' // Still include cookies as fallback
+    credentials: 'include' 
   };
+
+  console.log(`Fetching ${path}, Token: ${token ? 'Yes' : 'No'}`);
 
   return fetch(`${API_BASE_URL}${path}`, opts)
     .then(async res => {
@@ -150,12 +151,19 @@ async function doLogin() {
   }
 
   try {
-    const res = await apiFetch('/api/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
-      body: JSON.stringify({ name, password: pass, rememberMe: remember })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, password: pass, rememberMe: remember }),
+      credentials: 'include'
     });
-
+    
+    const res = await response.json();
     console.log("Login response:", res);
+    
+    if (!res.success) {
+      throw new Error(res.message || 'Login failed');
+    }
 
     if (remember) {
       localStorage.setItem('vms_remember_name', name);
@@ -163,13 +171,13 @@ async function doLogin() {
       localStorage.removeItem('vms_remember_name');
     }
 
-    // IMPORTANT: Store the token from response
-    const token = res.data.token;
-    if (token) {
-      localStorage.setItem('vms_token', token);
+    // Store token from response
+    if (res.data && res.data.token) {
+      localStorage.setItem('vms_token', res.data.token);
       console.log("Token stored successfully");
     } else {
-      console.error("No token in response:", res);
+      // If no token in response, create one from the session
+      console.warn("No token in response, will rely on cookie");
     }
     
     openDashboard(res.data.name || name);
@@ -251,7 +259,9 @@ function showForgot() {
 }
 
 function handleAuthError(err) {
-  if (err && String(err.message || '').toLowerCase().includes('unauthorized')) {
+  if (err && (err.status === 401 || String(err.message || '').toLowerCase().includes('unauthorized'))) {
+    console.log("Auth error detected, logging out");
+    localStorage.removeItem('vms_token');
     doLogout();
     showLoginInfo('Session expired. Please sign in again.');
     return true;
@@ -266,15 +276,27 @@ async function restoreSession() {
     document.getElementById('rememberMe').checked = true;
   }
 
+  const token = localStorage.getItem('vms_token');
+  console.log("Restoring session, token exists:", !!token);
+  
+  if (!token) {
+    console.log("No token found, showing login page");
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashPage').style.display = 'none';
+    return;
+  }
+
   try {
     const res = await apiFetch('/api/auth/me');
     if (res && res.data && res.data.name) {
+      console.log("Session restored for:", res.data.name);
       openDashboard(res.data.name);
+    } else {
+      throw new Error("No user data");
     }
   } catch (err) {
-    // 401 is expected when not logged in - do nothing
-    console.log("Not logged in, showing login page");
-    // Make sure login page is visible
+    console.log("Session restoration failed:", err.message);
+    localStorage.removeItem('vms_token');
     document.getElementById('loginPage').style.display = 'flex';
     document.getElementById('dashPage').style.display = 'none';
   }
