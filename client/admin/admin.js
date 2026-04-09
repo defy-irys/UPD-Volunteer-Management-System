@@ -37,6 +37,7 @@ const ICONS = {
 
 function apiFetch(path, options = {}) {
   const token = localStorage.getItem('vms_token');
+  console.log(`Fetching ${path}, Token exists: ${!!token}`);
 
   const opts = {
     ...options,
@@ -44,7 +45,8 @@ function apiFetch(path, options = {}) {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {})
-    }
+    },
+    credentials: 'include' // Still include cookies as fallback
   };
 
   return fetch(`${API_BASE_URL}${path}`, opts)
@@ -54,6 +56,14 @@ function apiFetch(path, options = {}) {
         body = await res.json();
       } catch (e) {
         body = null;
+      }
+
+      if (res.status === 401) {
+        console.log("Got 401, clearing token");
+        localStorage.removeItem('vms_token');
+        const error = new Error('Unauthorized');
+        error.status = 401;
+        throw error;
       }
 
       if (!res.ok || !body || body.success === false) {
@@ -145,16 +155,26 @@ async function doLogin() {
       body: JSON.stringify({ name, password: pass, rememberMe: remember })
     });
 
+    console.log("Login response:", res);
+
     if (remember) {
       localStorage.setItem('vms_remember_name', name);
     } else {
       localStorage.removeItem('vms_remember_name');
     }
 
+    // IMPORTANT: Store the token from response
     const token = res.data.token;
-    localStorage.setItem('vms_token', token);
+    if (token) {
+      localStorage.setItem('vms_token', token);
+      console.log("Token stored successfully");
+    } else {
+      console.error("No token in response:", res);
+    }
+    
     openDashboard(res.data.name || name);
   } catch (err) {
+    console.error("Login error:", err);
     showLoginError(err.message || 'Login failed.');
     document.getElementById('loginPass').value = '';
   }
@@ -252,7 +272,11 @@ async function restoreSession() {
       openDashboard(res.data.name);
     }
   } catch (err) {
-    // not logged in
+    // 401 is expected when not logged in - do nothing
+    console.log("Not logged in, showing login page");
+    // Make sure login page is visible
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashPage').style.display = 'none';
   }
 }
 
