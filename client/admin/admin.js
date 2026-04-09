@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../shared/config.js';
+console.log("API BASE:", API_BASE_URL);
 
 let currentUser = null;
 let searchTerm = '';
@@ -31,13 +32,15 @@ const ICONS = {
 };
 
 function apiFetch(path, options = {}) {
+  const token = localStorage.getItem('vms_token');
+
   const opts = {
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {})
-    },
-    credentials: 'include'
+    }
   };
 
   return fetch(`${API_BASE_URL}${path}`, opts)
@@ -78,7 +81,9 @@ function updateFilterStyles() {
   if (yearEl) yearEl.classList.toggle('active', yearEl.value !== 'all');
 }
 
-function showLoginInfo(text) {
+function showLoginInfo(text) { ...(options.headers || {})
+},
+credentials: 'include'
   const info = document.getElementById('loginInfo');
   if (!info) return;
   info.textContent = text;
@@ -144,7 +149,12 @@ async function doLogin() {
       localStorage.removeItem('vms_remember_name');
     }
 
-    openDashboard(res.data.name || name);
+    const token = res.data.token;
+
+// store token
+localStorage.setItem('vms_token', token);
+
+openDashboard(res.data.name || name);
   } catch (err) {
     showLoginError(err.message || 'Login failed.');
     document.getElementById('loginPass').value = '';
@@ -154,6 +164,7 @@ async function doLogin() {
 async function doLogout() {
   try {
     await apiFetch('/api/auth/logout', { method: 'POST' });
+    localStorage.removeItem('vms_token');
   } catch (err) {
     // ignore
   }
