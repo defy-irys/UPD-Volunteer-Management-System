@@ -1,15 +1,27 @@
 ﻿const jwt = require('jsonwebtoken');
-const { AppError } = require('./errorHandler');
 
 function requireAuth(req, res, next) {
-  const token = req.cookies && req.cookies.auth_token;
-  if (!token) return next(new AppError('Unauthorized.', 401));
+  // check auth header first
+  const authHeader = req.headers.authorization;
+  let token = null;
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  } else if (req.cookies && req.cookies.auth_token) {
+    // Fallback to cookie
+    token = req.cookies.auth_token;
+  }
+  
+  if (!token) {
+    return next(new AppError('Unauthorized - No token provided', 401));
+  }
+  
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = payload;
-    return next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
   } catch (err) {
-    return next(new AppError('Unauthorized.', 401));
+    return next(new AppError('Unauthorized - Invalid token', 401));
   }
 }
 
