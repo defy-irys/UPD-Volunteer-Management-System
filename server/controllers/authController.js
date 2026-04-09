@@ -20,45 +20,28 @@ function cookieOptions(remember) {
 
 async function login(req, res, next) {
   try {
-    console.log("=== LOGIN START ===");
-    console.log("Request body:", req.body);
-    console.log("Name:", req.body.name);
-    console.log("Password provided:", req.body.password ? "Yes (length: " + req.body.password.length + ")" : "No");
-    
     const { name, password, rememberMe } = req.body;
-    
-    if (!name || !password) {
-      console.log("Missing name or password");
-      return next(new AppError('Name and password required.', 400));
-    }
-    
-    console.log("Calling findByName for:", name);
     const admin = await findByName(name);
-    console.log("findByName result:", admin ? "Admin found" : "Admin not found");
-    
-    if (!admin) {
-      console.log("No admin found with name:", name);
-      return next(new AppError('Invalid credentials.', 401));
-    }
-    
-    console.log("Admin found, comparing password...");
-    const ok = await bcrypt.compare(password, admin.password_hash);
-    console.log("Password match:", ok);
-    
-    if (!ok) {
-      console.log("Password mismatch for:", name);
-      return next(new AppError('Invalid credentials.', 401));
-    }
+    if (!admin) return next(new AppError('Invalid credentials.', 401));
 
-    console.log("Login successful for:", name);
+    const ok = await bcrypt.compare(password, admin.password_hash);
+    if (!ok) return next(new AppError('Invalid credentials.', 401));
+
     const token = signToken({ id: admin.id, name: admin.name }, rememberMe);
+    
+    // keep set cookie as backup
     res.cookie('auth_token', token, cookieOptions(rememberMe));
-    return sendResponse(res, { success: true, data: { name: admin.name }, message: 'Login successful.' });
+    
+    // return token in response body for client-side storage
+    return sendResponse(res, { 
+      success: true, 
+      data: { 
+        name: admin.name,
+        token: token
+      }, 
+      message: 'Login successful.' 
+    });
   } catch (err) {
-    console.error("=== LOGIN ERROR ===");
-    console.error("Error message:", err.message);
-    console.error("Error stack:", err.stack);
-    console.error("Full error:", err);
     return next(err);
   }
 }
