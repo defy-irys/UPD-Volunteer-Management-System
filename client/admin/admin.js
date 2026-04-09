@@ -1,4 +1,5 @@
-import { API_BASE_URL } from './shared/config.js';
+import { API_BASE_URL } from '../shared/config.js';
+
 console.log("API BASE:", API_BASE_URL);
 
 let currentUser = null;
@@ -81,9 +82,7 @@ function updateFilterStyles() {
   if (yearEl) yearEl.classList.toggle('active', yearEl.value !== 'all');
 }
 
-function showLoginInfo(text) { ...(options.headers || {})
-},
-credentials: 'include'
+function showLoginInfo(text) {
   const info = document.getElementById('loginInfo');
   if (!info) return;
   info.textContent = text;
@@ -150,11 +149,8 @@ async function doLogin() {
     }
 
     const token = res.data.token;
-
-// store token
-localStorage.setItem('vms_token', token);
-
-openDashboard(res.data.name || name);
+    localStorage.setItem('vms_token', token);
+    openDashboard(res.data.name || name);
   } catch (err) {
     showLoginError(err.message || 'Login failed.');
     document.getElementById('loginPass').value = '';
@@ -640,6 +636,3 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-
-
-
