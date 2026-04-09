@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../shared/config.js';
+import { API_BASE_URL } from './shared/config.js';
 console.log("API BASE:", API_BASE_URL);
 
 let currentUser = null;
