@@ -599,3 +599,135 @@ footer {
   border-top: 1px solid var(--border);
   margin: 10px 0;
 }
+
+.view-btn,
+.delete-btn {
+  transition: all 0.2s ease;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.view-btn:hover {
+  background: #5c0c0e !important;
+  transform: translateY(-1px);
+}
+
+.delete-btn {
+  background: #dc2626 !important;
+  margin-left: 8px;
+}
+
+.delete-btn:hover {
+  background: #b91c1c !important;
+  transform: translateY(-1px);
+}
+
+.view-btn:active,
+.delete-btn:active {
+  transform: translateY(0);
+}
+
+.table-wrap td:last-child {
+  white-space: nowrap;
+}
+
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  z-index: 10001;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-dialog h3 {
+  margin: 0 0 12px 0;
+  color: var(--navy);
+}
+
+.confirm-dialog p {
+  margin: 0 0 20px 0;
+  color: var(--text);
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.confirm-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.confirm-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.confirm-cancel:hover {
+  background: #d1d5db;
+}
+
+.confirm-delete {
+  background: #dc2626;
+  color: white;
+}
+
+.confirm-delete:hover {
+  background: #b91c1c;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+#tempMessage {
+  animation: slideIn 0.3s ease;
+}
+
+#tempMessage.hide {
+  animation: slideOut 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .view-btn,
+  .delete-btn {
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+  }
+  
+  .delete-btn {
+    margin-left: 4px;
+  }
+}

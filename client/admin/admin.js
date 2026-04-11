@@ -432,8 +432,9 @@ function renderTable(currentRows) {
             <td>${hl(mobile || '-')}</td>
             <td>${hl(v.email || '-')}</td>
             <td>${hl(v.year_joined || '-')}</td>
-            <td style="white-space:nowrap;color:var(--muted);font-size:12.5px">${fmt(v)}</td>
-            <td><button class="view-btn" type="button" data-action="view" data-id="${escAttr(v.id)}" style="background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">View</button></td>
+            <td style="white-space: nowrap;">
+            <button class="view-btn" type="button" data-action="view" data-id="${escAttr(v.id)}" style="background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:8px">View</button>
+            <button class="delete-btn" type="button" data-action="delete" data-id="${escAttr(v.id)}" data-name="${escAttr(fullName)}" style="background:#dc2626;color:#fff;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Delete</button></td>
           </tr>
         `;}).join('')}
       </tbody>
@@ -536,6 +537,84 @@ function openDetail(id) {
 
 function closeModal() {
   document.getElementById('detailModal').style.display = 'none';
+}
+
+async function deleteVolunteer(id, name) {
+
+  const dialog = document.createElement('div');
+  dialog.className = 'confirm-dialog';
+  dialog.innerHTML = `
+    <h3>Confirm Delete</h3>
+    <p>Are you sure you want to delete <strong>${escHtml(name)}</strong>?<br>This action cannot be undone.</p>
+    <div class="confirm-buttons">
+      <button class="confirm-cancel">Cancel</button>
+      <button class="confirm-delete">Delete</button>
+    </div>
+  `;
+  
+  document.body.appendChild(dialog);
+  
+  const cancelBtn = dialog.querySelector('.confirm-cancel');
+  const deleteBtn = dialog.querySelector('.confirm-delete');
+  
+  return new Promise((resolve) => {
+    cancelBtn.onclick = () => {
+      dialog.remove();
+      resolve(false);
+    };
+    
+    deleteBtn.onclick = async () => {
+      dialog.remove();
+      
+      try {
+        const result = await apiFetch(`/api/volunteers/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (result.success) {
+          showTemporaryMessage(`✅ Successfully deleted "${name}"`, 'success');
+          resetQuery(); // Refresh the table
+          loadStats(); // Update statistics
+        } else {
+          showTemporaryMessage(`❌ Failed to delete: ${result.message}`, 'error');
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        showTemporaryMessage(`❌ Error deleting: ${err.message}`, 'error');
+      }
+      resolve(true);
+    };
+  });
+}
+
+function showTemporaryMessage(message, type = 'success') {
+
+  let msgDiv = document.getElementById('tempMessage');
+  if (!msgDiv) {
+    msgDiv = document.createElement('div');
+    msgDiv.id = 'tempMessage';
+    msgDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      pointer-events: none;
+    `;
+    document.body.appendChild(msgDiv);
+  }
+  
+  msgDiv.style.backgroundColor = type === 'success' ? '#10b981' : '#ef4444';
+  msgDiv.style.color = 'white';
+  msgDiv.textContent = message;
+  msgDiv.style.display = 'block';
+  
+  setTimeout(() => {
+    msgDiv.style.display = 'none';
+  }, 3000);
 }
 
 function printList() {
@@ -656,6 +735,7 @@ function initEvents() {
     else if (action === 'close-modal') closeModal();
     else if (action === 'view-all') viewAll();
     else if (action === 'show-more') showMore();
+    else if (action === 'delete') deleteVolunteer(actionEl.dataset.id, actionEl.dataset.name);
   });
 
   const modalBg = document.getElementById('detailModal');
