@@ -32,4 +32,25 @@ router.get('/', requireAuth, volunteerController.list);
 router.get('/stats', requireAuth, volunteerController.stats);
 router.post('/', validate(createSchema), volunteerController.create);
 
+router.delete('/:id', requireAuth, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const db = require('../db');
+    
+    // Check if volunteer exists
+    const checkResult = await db.query('SELECT * FROM volunteers WHERE id = $1', [id]);
+    if (checkResult.rows.length === 0) {
+      return sendResponse(res, { success: false, data: null, message: 'Volunteer not found' }, 404);
+    }
+    
+    // Delete the volunteer
+    await db.query('DELETE FROM volunteers WHERE id = $1', [id]);
+    
+    sendResponse(res, { success: true, data: null, message: 'Volunteer deleted successfully' });
+  } catch (err) {
+    console.error("Delete error:", err);
+    next(err);
+  }
+});
+
 module.exports = router;
