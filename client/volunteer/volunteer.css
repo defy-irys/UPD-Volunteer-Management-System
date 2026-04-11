@@ -24,7 +24,7 @@
 body {
   font-family: 'DM Sans', Arial, sans-serif;
   background-color: var(--bg);
-  background-image: url('../assets/Oblation-Plaza-by-Misael-Bacani_4.jpg');
+  background-image: url('../assets/UPM_By_Zando_F_Escultura.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -42,10 +42,10 @@ body {
 
 header {
   width: 100%;
-  background: linear-gradient(135deg, rgba(26, 58, 92, 0.75), rgba(26, 58, 92, 0.55));
+  background: rgba(0, 0, 0, 0.45);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #fff;
   text-align: center;
   padding: 12px 20px 10px;
@@ -540,3 +540,40 @@ footer {
   margin-left: auto;
   margin-right: auto;
 } 
+
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: inline-block;
+  margin: 0;
+}
+
+.footer-logo-img:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+footer .footer-logo-img {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-logos {
+    gap: 16px;
+  }
+  
+  .footer-logo-img {
+    height: 32px;
+  }
+}

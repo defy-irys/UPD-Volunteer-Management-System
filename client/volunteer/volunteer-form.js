@@ -619,3 +619,7 @@ if (document.readyState === 'loading') {
   init();
 }
 
+// For development
+export const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://your-api-domain.com'
+  : 'http://localhost:5000';

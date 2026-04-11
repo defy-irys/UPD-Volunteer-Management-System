@@ -572,15 +572,15 @@ async function deleteVolunteer(id, name) {
         });
         
         if (result.success) {
-          showTemporaryMessage(`✅ Successfully deleted "${name}"`, 'success');
+          showTemporaryMessage(`Successfully deleted "${name}"`, 'success');
           resetQuery(); // Refresh the table
           loadStats(); // Update statistics
         } else {
-          showTemporaryMessage(`❌ Failed to delete: ${result.message}`, 'error');
+          showTemporaryMessage(`Failed to delete: ${result.message}`, 'error');
         }
       } catch (err) {
         console.error("Delete error:", err);
-        showTemporaryMessage(`❌ Error deleting: ${err.message}`, 'error');
+        showTemporaryMessage(`Error deleting: ${err.message}`, 'error');
       }
       resolve(true);
     };
