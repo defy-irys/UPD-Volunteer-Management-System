@@ -390,7 +390,7 @@ function renderStep2(c) {
     fields = `
       <div class="field">
         <label>PRC License Number <span>*</span></label>
-        <input id="prc_license" type="text" inputmode="numeric" maxlength="7" placeholder="Up to 7 digits" value="${data.prc_license}"/>
+        <input id="prc_license" type="text" inputmode="numeric" maxlength="7" value="${data.prc_license}"/>
         <div class="err-msg" id="prc_license_err"></div>
       </div>
       <div class="field">
@@ -403,7 +403,7 @@ function renderStep2(c) {
     fields = `
       <div class="field">
         <label>College <span>*</span></label>
-        <input id="college" type="text" placeholder="e.g. College of Medicine" value="${data.college}"/>
+        <input id="college" type="text" placeholder="e.g. University of the Philippines" value="${data.college}"/>
         <div class="err-msg" id="college_err"></div>
       </div>
       <div class="field">
