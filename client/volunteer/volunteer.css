@@ -18,7 +18,7 @@
   --border: #dcd3c8;
   --green: #0b3d2e;
   --radius: 14px;
-  --ui-max: 620px;
+  --ui-max: 780px;
 }
 
 body {
@@ -191,7 +191,10 @@ header p {
   background: rgba(253, 252, 250, 0.9);
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  resize: vertical;
 }
+
+.field textarea { min-height: 44px; }
 
 .field input:focus,
 .field select:focus,
@@ -202,7 +205,8 @@ header p {
 }
 
 .field input.err,
-.field select.err { border-color: #c0392b; }
+.field select.err,
+.field textarea.err { border-color: #c0392b; }
 
 .field .hint {
   font-size: 11.5px;
@@ -252,12 +256,27 @@ header p {
 
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-.row-3 { display: grid; grid-template-columns: 1fr 1fr 80px; gap: 16px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.row-4 { display: grid; grid-template-columns: 1.1fr 0.7fr 1fr 0.8fr; gap: 16px; }
 
 @media (max-width: 480px) {
   .row-2,
-  .row-3 { grid-template-columns: 1fr; }
+  .row-3,
+  .row-4 { grid-template-columns: 1fr; }
 }
+
+.section-title {
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-top: 1px solid rgba(123, 17, 19, 0.18);
+  padding-top: 14px;
+  margin: 6px 0 14px;
+}
+
+.mt-10 { margin-top: 10px; }
 
 .check-grid {
   display: flex;
@@ -338,6 +357,19 @@ header p {
 }
 
 .btn-back:hover { border-color: var(--navy); color: var(--navy); }
+
+.btn-bypass {
+  background: #fff7df;
+  color: var(--navy2);
+  border: 1.5px dashed var(--amber);
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.btn-bypass:hover {
+  background: var(--amber2);
+  transform: translateY(-1px);
+}
 
 .btn-submit {
   background: var(--green);
